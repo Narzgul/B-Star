@@ -2,7 +2,7 @@ package src.com.github.narzgul;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        Node[][] nodes = new Node[20][10];
+        Node[][] nodes = new Node[20][20];
         System.out.println(nodes.length);
         Object notifier = new Object();
 
