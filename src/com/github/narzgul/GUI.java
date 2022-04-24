@@ -7,19 +7,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUI {
-    private JFrame frame;
-    private JPanel grid;
-    private JButton[][] buttons;
     private Object notifier;
     private char nodeType;
     private int[] start, end;
 
-    private ArrayList<int[]> obstacle = new ArrayList<>();
+    private final ArrayList<int[]> obstacle = new ArrayList<>();
     public GUI(int length, int height) {
         notifier = new Object();
         nodeType = 's';
 
-        frame = new JFrame();
+        JFrame frame = new JFrame();
         frame.setSize(500, 550);
         frame.setTitle("A*");
         frame.setLocationRelativeTo(null); // Middle of the screen
@@ -28,7 +25,7 @@ public class GUI {
 
         JPanel borderLayout = new JPanel();
         borderLayout.setLayout(new BorderLayout()); // A layout with borders that are own panels
-        grid = new JPanel();
+        JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(length,height));
         borderLayout.add(grid, BorderLayout.CENTER); // Middle of the panel
         JPanel statusBar = new JPanel();
@@ -36,7 +33,7 @@ public class GUI {
         borderLayout.add(statusBar, BorderLayout.SOUTH); // Bottom of the panel
         frame.add(borderLayout);
 
-        JTextField status = new JTextField("Erik ist gay");
+        JTextField status = new JTextField("Set the Start");
         status.setBorder(null); // Remove border and background
         status.setBackground(null);
         statusBar.add(status);
@@ -46,14 +43,24 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (nodeType) {
-                    case 's' -> nodeType = 'e';
-                    case 'e' -> nodeType = 'o';
-                    case 'o' -> System.out.println("Not yet implemented!");
+                    case 's' -> {
+                        nodeType = 'e';
+                        status.setText("Set the End");
+                    }
+                    case 'e' -> {
+                        nodeType = 'o';
+                        status.setText("Set the Obstacles");
+                    }
+                    case 'o' -> {
+                        notifier.notify();
+                        System.out.println("Not yet implemented!");
+                    }
                 }
             }
         });
         statusBar.add(next);
 
+        JButton[][] buttons;
         buttons = new JButton[length][height];
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < height; j++) {
@@ -83,7 +90,6 @@ public class GUI {
                                     obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
                                 }
                             }
-                            // notifier.notify();
                         }
                     }
                 });
@@ -98,5 +104,13 @@ public class GUI {
 
     public void setNotifier(Object notifier) {
         this.notifier = notifier;
+    }
+
+    public int[] getStart() {
+        return start;
+    }
+
+    public int[] getEnd() {
+        return end;
     }
 }

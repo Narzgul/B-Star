@@ -4,8 +4,9 @@ public class Node {
     private int gCost;
     private int hCost;
     private int fCost;
-    public Node() {
-
+    private char special;
+    public Node(char special) {
+        this.special = special;
     }
 
     public int getGCost() {
