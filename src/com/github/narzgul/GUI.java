@@ -7,13 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUI {
-    private Object notifier;
     private char nodeType;
     private int[] start, end;
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
     public GUI(int length, int height) {
-        notifier = new Object();
         nodeType = 's';
 
         JFrame frame = new JFrame();
@@ -39,22 +37,19 @@ public class GUI {
         statusBar.add(status);
 
         JButton next = new JButton("Next");
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (nodeType) {
-                    case 's' -> {
-                        nodeType = 'e';
-                        status.setText("Set the End");
-                    }
-                    case 'e' -> {
-                        nodeType = 'o';
-                        status.setText("Set the Obstacles");
-                    }
-                    case 'o' -> {
-                        notifier.notify();
-                        System.out.println("Not yet implemented!");
-                    }
+        next.addActionListener(e -> {
+            switch (nodeType) {
+                case 's' -> {
+                    nodeType = 'e';
+                    status.setText("Set the End");
+                }
+                case 'e' -> {
+                    nodeType = 'o';
+                    status.setText("Set the Obstacles");
+                }
+                case 'o' -> {
+                    Main.getInstance().startPathfinder();
+                    System.out.println("Not yet implemented!");
                 }
             }
         });
@@ -69,26 +64,24 @@ public class GUI {
                 int finalI = i; // Final vars for the ActionListener
                 int finalJ = j;
                 buttons[i][j].addActionListener(clickEvent -> {
-                    synchronized (notifier) {
-                        if (clickEvent.getSource() instanceof JButton button) {
-                            switch (nodeType) {
-                                case 's' -> { // Start
-                                    button.setBackground(Color.GREEN);
-                                    System.out.println("Start: " + finalI + ',' + finalJ);
-                                    if (start != null) buttons[start[0]][start[1]].setBackground(Color.WHITE);
-                                    start = new int[]{finalI, finalJ};
-                                }
-                                case 'e' -> { // End
-                                    button.setBackground(Color.MAGENTA);
-                                    System.out.println("End: " + finalI + ',' + finalJ);
-                                    if (end != null) buttons[end[0]][end[1]].setBackground(Color.WHITE);
-                                    end = new int[]{finalI, finalJ};
-                                }
-                                case 'o' -> { // Obstacle
-                                    button.setBackground(Color.GRAY);
-                                    System.out.println("Obstacle: " + finalI + ',' + finalJ);
-                                    obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
-                                }
+                    if (clickEvent.getSource() instanceof JButton button) {
+                        switch (nodeType) {
+                            case 's' -> { // Start
+                                button.setBackground(Color.GREEN);
+                                System.out.println("Start: " + finalI + ',' + finalJ);
+                                if (start != null) buttons[start[0]][start[1]].setBackground(Color.WHITE);
+                                start = new int[]{finalI, finalJ};
+                            }
+                            case 'e' -> { // End
+                                button.setBackground(Color.MAGENTA);
+                                System.out.println("End: " + finalI + ',' + finalJ);
+                                if (end != null) buttons[end[0]][end[1]].setBackground(Color.WHITE);
+                                end = new int[]{finalI, finalJ};
+                            }
+                            case 'o' -> { // Obstacle
+                                button.setBackground(Color.GRAY);
+                                System.out.println("Obstacle: " + finalI + ',' + finalJ);
+                                obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
                             }
                         }
                     }
@@ -100,10 +93,6 @@ public class GUI {
 
     public ArrayList<int[]> getObstacle() {
         return obstacle;
-    }
-
-    public void setNotifier(Object notifier) {
-        this.notifier = notifier;
     }
 
     public int[] getStart() {
