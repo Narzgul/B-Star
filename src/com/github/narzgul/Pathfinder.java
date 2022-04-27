@@ -10,7 +10,7 @@ public class Pathfinder {
     ArrayList<Node> openNodes = new ArrayList<>();
     ArrayList<Node> closedNodes = new ArrayList<>();
     int[] start, end;
-    GUI gui = Main.getInstance().gui;
+    GUI gui = Main.getInstance().gui; // Get GUI from Main
     public Pathfinder(Node[][] nodes, int[] start, int[] end) {
         this.nodes = nodes;
         this.start = start;
@@ -20,15 +20,17 @@ public class Pathfinder {
     public void start() {
         System.out.println("Started Pathfinder");
 
-        openNodes.add(nodes[start[0]][start[1]]);
-        Node currentNode = openNodes.get(0);
+        openNodes.add(nodes[start[0]][start[1]]); // Makes start first openNode
+        Node currentNode = openNodes.get(0); // Gets first openNode (start)
         while (currentNode.getPos() != nodes[end[0]][end[1]].getPos()) {
-            Collections.sort(openNodes);
-            currentNode = openNodes.get(0);
-            gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
-            openNodes.remove(currentNode);
+            Collections.sort(openNodes); // Sort by FCost
+            currentNode = openNodes.get(0); // Get node with lowest FCost
+            openNodes.remove(currentNode); // Move currentNode to closedNodes
             closedNodes.add(currentNode);
+
+            gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
             gui.setBackground(currentNode.getPos(), Color.RED);
+
             for (Node neighbor : getNeighbors(currentNode.getPos())) {
                 if (!openNodes.contains(neighbor)) {
                     neighbor.setGCost(currentNode.getGCost() + getDistance(currentNode, neighbor.getPos()));
@@ -37,6 +39,7 @@ public class Pathfinder {
                     neighbor.setParent(currentNode);
                     openNodes.add(neighbor);
                 } else {
+                    // Check for new shortest path to neighbor
                     int newGCost = currentNode.getGCost() + getDistance(currentNode, neighbor.getPos());
                     if (newGCost < neighbor.getGCost()) {
                         neighbor.setGCost(newGCost);
@@ -45,6 +48,8 @@ public class Pathfinder {
                 }
             }
         }
+
+        // Mark shortest path cyan
         while (currentNode != nodes[start[0]][start[1]]) {
             gui.setBackground(currentNode.getPos(), Color.CYAN);
             currentNode = currentNode.getParent();
@@ -52,9 +57,10 @@ public class Pathfinder {
     }
 
     public int getDistance(Node node, int[] point) {
-        int disX = Math.abs(point[0] - node.getPos()[0]);
-        int disY = Math.abs(point[1] - node.getPos()[1]);
+        int disX = Math.abs(point[0] - node.getPos()[0]); // Distance to point in X-Direction
+        int disY = Math.abs(point[1] - node.getPos()[1]); // Distance to point in Y-Direction
 
+        // Add diagonal (14) by looking for shortest distance (X || Y) + other direction (10)
         return disX < disY ? (14 * disX) + 10 * (disY - disX) : (14 * disY) + 10 * (disX - disY);
     }
 
@@ -65,8 +71,8 @@ public class Pathfinder {
                 for (int j = cords[1] -1; j <= cords[1] + 1; j++) {
                     if (j >= 0 && j < nodes[0].length) { // Y-Cord is in grid
                         if (!(i == cords[0] && j == cords[1])) { // Is not the start
-                            if (nodes[i][j].getSpecial() == ' ') {
-                                if (!closedNodes.contains(nodes[i][j])) neighbors.add(nodes[i][j]); // Add empty Node
+                            if (nodes[i][j].getSpecial() == ' ') { // Empty Node
+                                if (!closedNodes.contains(nodes[i][j])) neighbors.add(nodes[i][j]);
                             }
                         }
                     }

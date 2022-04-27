@@ -50,9 +50,8 @@ public class Node implements Comparable<Node>{
     public void setParent(Node parent) {
         this.parent = parent;
     }
-
     @Override
     public int compareTo(Node otherNode) {
-        return this.getFCost() - otherNode.getFCost();
+        return this.getFCost() - otherNode.getFCost(); // Compare by FCost
     }
 }

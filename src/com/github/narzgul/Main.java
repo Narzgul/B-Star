@@ -12,19 +12,15 @@ public class Main {
         nodes = new Node[20][20];
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes[0].length; j++) {
-                nodes[i][j] = new Node(' ', new int[]{i, j});
+                nodes[i][j] = new Node(' ', new int[]{i, j}); // Fills array with empty nodes
             }
         }
 
         gui = new GUI(nodes.length, nodes[0].length);
-
-
-        ArrayList<Node> openNodes = new ArrayList<>();
-
     }
 
     public void startPathfinder() {
-        start = gui.getStart();
+        start = gui.getStart(); // Get Start + End position
         end = gui.getEnd();
         nodes[start[0]][start[1]].setSpecial('s');// Map Start
         nodes[end[0]][end[1]].setSpecial(' '); // Map End
@@ -37,12 +33,12 @@ public class Main {
     }
 
     public static Main getInstance(){
-        if (instance == null) instance = new Main(); // Ensures only 1 Main
+        if (instance == null) instance = new Main(); // Ensures only 1 Main (Singleton)
 
         return instance;
     }
 
     public static void main(String[] args){
-        Main main = Main.getInstance();
+        Main.getInstance(); // Start Main
     }
 }
