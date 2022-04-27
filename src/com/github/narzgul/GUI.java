@@ -18,8 +18,8 @@ public class GUI {
         frame.setSize(500, 550);
         frame.setTitle("A*");
         frame.setLocationRelativeTo(null); // Middle of the screen
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Stop process on closing
+        frame.doLayout();
 
         JPanel borderLayout = new JPanel();
         borderLayout.setLayout(new BorderLayout()); // A layout with borders that are own panels
@@ -42,12 +42,21 @@ public class GUI {
                 case 's' -> {
                     nodeType = 'e';
                     status.setText("Set the End");
+                    status.setSize(status.getPreferredSize());
+                    statusBar.doLayout();
                 }
                 case 'e' -> {
                     nodeType = 'o';
                     status.setText("Set the Obstacles");
+                    status.setSize(status.getPreferredSize());
+                    statusBar.doLayout();
                 }
-                case 'o' -> Main.getInstance().startPathfinder();
+                case 'o' -> {
+                    Main.getInstance().startPathfinder();
+                    status.setText("Start again?");
+                    status.setSize(status.getPreferredSize());
+                    statusBar.doLayout();
+                }
             }
         });
         statusBar.add(next);
@@ -85,6 +94,7 @@ public class GUI {
                 grid.add(buttons[i][j]);
             }
         }
+        frame.setVisible(true);
     }
 
     public void setBackground(int[] pos, Color color) {

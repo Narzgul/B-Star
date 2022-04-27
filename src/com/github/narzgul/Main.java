@@ -19,7 +19,7 @@ public class Main {
     public void startPathfinder() {
         int[] start = gui.getStart(); // Get Start + End position
         int[] end = gui.getEnd();
-        nodes[start[0]][start[1]].setSpecial('s');// Map Start
+        nodes[start[0]][start[1]].setSpecial('s'); // Map Start
         nodes[end[0]][end[1]].setSpecial(' '); // Map End
 
         // Map obstacles to the Node array
