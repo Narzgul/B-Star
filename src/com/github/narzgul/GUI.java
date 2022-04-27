@@ -93,6 +93,9 @@ public class GUI {
     public void setBackground(int[] pos, Color color) {
         buttons[pos[0]][pos[1]].setBackground(color);
     }
+    public void setText(int[] pos, String text) {
+        buttons[pos[0]][pos[1]].setText(text);
+    }
 
     public ArrayList<int[]> getObstacle() {
         return obstacle;

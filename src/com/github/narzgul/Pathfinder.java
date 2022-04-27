@@ -19,7 +19,6 @@ public class Pathfinder {
 
     public void start() {
         System.out.println("Started Pathfinder");
-        System.out.println(nodes[end[0]][end[1]].getFCost());
 
         Node currentNode = nodes[start[0]][start[1]];
         while (currentNode.getPos() != nodes[end[0]][end[1]].getPos()) {
@@ -28,7 +27,6 @@ public class Pathfinder {
             gui.setBackground(currentNode.getPos(), Color.RED);
             openNodes.addAll(getNeighbors(currentNode.getPos()));
             for (Node openNode : openNodes) {
-                openNode.setGCost(getDistance(openNode, start));
                 openNode.setHCost(getDistance(openNode, end));
                 gui.setBackground(openNode.getPos(), Color.GREEN);
             }
@@ -36,15 +34,9 @@ public class Pathfinder {
             currentNode = openNodes.get(0);
             System.out.println(Arrays.toString(currentNode.getPos()));
             System.out.println(currentNode.getFCost());
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            gui.setText(currentNode.getPos(), "" + currentNode.getGCost());
         }
     }
-
-
 
     public int getDistance(Node node, int[] point) {
         int disX = Math.abs(point[0] - node.getPos()[0]);
