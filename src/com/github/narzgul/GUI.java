@@ -5,9 +5,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GUI {
-    private char nodeType;
+    private char nodeType; // Type of Node to be created
     private int[] start, end;
-    JButton[][] buttons;
+    private final JButton[][] buttons;
 
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
@@ -47,10 +47,7 @@ public class GUI {
                     nodeType = 'o';
                     status.setText("Set the Obstacles");
                 }
-                case 'o' -> {
-                    Main.getInstance().startPathfinder();
-                    System.out.println("Not yet implemented!");
-                }
+                case 'o' -> Main.getInstance().startPathfinder();
             }
         });
         statusBar.add(next);

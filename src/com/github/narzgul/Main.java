@@ -1,12 +1,9 @@
 package src.com.github.narzgul;
 
-import java.util.ArrayList;
-
 public class Main {
     private static Main instance = null;
-    Node[][] nodes;
-    int[] start, end;
-    GUI gui;
+    private final Node[][] nodes;
+    private final GUI gui;
 
     private Main() {
         nodes = new Node[20][20];
@@ -20,8 +17,8 @@ public class Main {
     }
 
     public void startPathfinder() {
-        start = gui.getStart(); // Get Start + End position
-        end = gui.getEnd();
+        int[] start = gui.getStart(); // Get Start + End position
+        int[] end = gui.getEnd();
         nodes[start[0]][start[1]].setSpecial('s');// Map Start
         nodes[end[0]][end[1]].setSpecial(' '); // Map End
 
@@ -30,6 +27,10 @@ public class Main {
 
         Pathfinder pathfinder = new Pathfinder(nodes, start, end);
         pathfinder.start();
+    }
+
+    public GUI getGui() {
+        return gui;
     }
 
     public static Main getInstance(){

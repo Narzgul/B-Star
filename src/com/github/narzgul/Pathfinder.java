@@ -2,15 +2,14 @@ package src.com.github.narzgul;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Pathfinder {
-    Node[][] nodes;
-    ArrayList<Node> openNodes = new ArrayList<>();
-    ArrayList<Node> closedNodes = new ArrayList<>();
-    int[] start, end;
-    GUI gui = Main.getInstance().gui; // Get GUI from Main
+    private final Node[][] nodes;
+    private final ArrayList<Node> openNodes = new ArrayList<>();
+    private final ArrayList<Node> closedNodes = new ArrayList<>();
+    private final int[] start, end;
+    private final GUI gui = Main.getInstance().getGui(); // Get GUI from Main
     public Pathfinder(Node[][] nodes, int[] start, int[] end) {
         this.nodes = nodes;
         this.start = start;
@@ -21,8 +20,8 @@ public class Pathfinder {
         System.out.println("Started Pathfinder");
 
         openNodes.add(nodes[start[0]][start[1]]); // Makes start first openNode
-        Node currentNode = openNodes.get(0); // Gets first openNode (start)
-        while (currentNode.getPos() != nodes[end[0]][end[1]].getPos()) {
+        Node currentNode;
+        do {
             Collections.sort(openNodes); // Sort by FCost
             currentNode = openNodes.get(0); // Get node with lowest FCost
             openNodes.remove(currentNode); // Move currentNode to closedNodes
@@ -47,7 +46,7 @@ public class Pathfinder {
                     }
                 }
             }
-        }
+        } while (currentNode.getPos() != nodes[end[0]][end[1]].getPos());
 
         // Mark shortest path cyan
         while (currentNode != nodes[start[0]][start[1]]) {
