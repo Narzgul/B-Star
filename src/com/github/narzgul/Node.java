@@ -1,6 +1,6 @@
 package src.com.github.narzgul;
 
-public class Node {
+public class Node implements Comparable<Node>{
     private int gCost;
     private int hCost;
     private char special;
@@ -49,5 +49,10 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public int compareTo(Node otherNode) {
+        return this.getFCost() - otherNode.getFCost();
     }
 }

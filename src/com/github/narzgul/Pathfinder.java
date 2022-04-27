@@ -1,10 +1,12 @@
 package src.com.github.narzgul;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Pathfinder {
     Node[][] nodes;
     ArrayList<Node> openNodes = new ArrayList<>();
+    ArrayList<Node> closedNodes = new ArrayList<>();
     int[] start, end;
 
     public Pathfinder(Node[][] nodes, int[] start, int[] end) {
@@ -22,7 +24,14 @@ public class Pathfinder {
             openNode.setHCost(getDistance(openNode, end));
             System.out.println(openNode.getFCost());
         }
+        System.out.println("------------------");
+        Collections.sort(openNodes);
+        for (Node openNode : openNodes) {
+            System.out.println(openNode.getFCost());
+        }
     }
+
+
 
     public int getDistance(Node node, int[] point) {
         int disX = Math.abs(point[0] - node.getPos()[0]);
