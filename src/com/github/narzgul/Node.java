@@ -4,6 +4,12 @@ public class Node implements Comparable<Node>{
     private int gCost;
     private int hCost;
     private char special;
+    /*
+    's' = start
+    'e' = end
+    'o' = obstacle
+    ' ' = empty
+     */
     private final int[] pos;
     private Node parent;
     public Node(char special, int[] pos) {
@@ -17,10 +23,6 @@ public class Node implements Comparable<Node>{
 
     public void setGCost(int gCost) {
         this.gCost = gCost;
-    }
-
-    public int getHCost() {
-        return hCost;
     }
 
     public void setHCost(int hCost) {
@@ -50,9 +52,8 @@ public class Node implements Comparable<Node>{
     public void setParent(Node parent) {
         this.parent = parent;
     }
-
     @Override
     public int compareTo(Node otherNode) {
-        return this.getFCost() - otherNode.getFCost();
+        return this.getFCost() - otherNode.getFCost(); // Compare by FCost
     }
 }
