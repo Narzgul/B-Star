@@ -25,16 +25,20 @@ public class Pathfinder {
             openNodes.remove(currentNode);
             closedNodes.add(currentNode);
             gui.setBackground(currentNode.getPos(), Color.RED);
-            openNodes.addAll(getNeighbors(currentNode.getPos()));
-            for (Node openNode : openNodes) {
-                openNode.setHCost(getDistance(openNode, end));
-                gui.setBackground(openNode.getPos(), Color.GREEN);
+            for (Node neighbor : getNeighbors(currentNode.getPos())) {
+                if (!openNodes.contains(neighbor)) {
+                    neighbor.setGCost(currentNode.getGCost() + getDistance(currentNode, neighbor.getPos()));
+                    neighbor.setHCost(getDistance(neighbor, end));
+                    gui.setBackground(neighbor.getPos(), Color.GREEN);
+                    openNodes.add(neighbor);
+                } else {
+                    int newGCost = currentNode.getGCost() + getDistance(currentNode, neighbor.getPos());
+                    if (newGCost < neighbor.getGCost()) neighbor.setGCost(newGCost);
+                }
             }
             Collections.sort(openNodes);
             currentNode = openNodes.get(0);
-            System.out.println(Arrays.toString(currentNode.getPos()));
-            System.out.println(currentNode.getFCost());
-            gui.setText(currentNode.getPos(), "" + currentNode.getGCost());
+            gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
         }
     }
 
@@ -53,7 +57,7 @@ public class Pathfinder {
                     if (j >= 0 && j < nodes[0].length) { // Y-Cord is in grid
                         if (!(i == cords[0] && j == cords[1])) { // Is not the start
                             if (nodes[i][j].getSpecial() == ' ') {
-                                if (!openNodes.contains(nodes[i][j]) && !closedNodes.contains(nodes[i][j])) neighbors.add(nodes[i][j]); // Add empty Node
+                                if (!closedNodes.contains(nodes[i][j])) neighbors.add(nodes[i][j]); // Add empty Node
                             }
                         }
                     }
