@@ -1,6 +1,8 @@
 package src.com.github.narzgul;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Pathfinder {
@@ -8,7 +10,7 @@ public class Pathfinder {
     ArrayList<Node> openNodes = new ArrayList<>();
     ArrayList<Node> closedNodes = new ArrayList<>();
     int[] start, end;
-
+    GUI gui = Main.getInstance().gui;
     public Pathfinder(Node[][] nodes, int[] start, int[] end) {
         this.nodes = nodes;
         this.start = start;
@@ -17,17 +19,28 @@ public class Pathfinder {
 
     public void start() {
         System.out.println("Started Pathfinder");
+        System.out.println(nodes[end[0]][end[1]].getFCost());
 
-        openNodes.addAll(getNeighbors(new int[] {start[0], start[1]}));
-        for (Node openNode : openNodes){
-            openNode.setGCost(getDistance(openNode, start));
-            openNode.setHCost(getDistance(openNode, end));
-            System.out.println(openNode.getFCost());
-        }
-        System.out.println("------------------");
-        Collections.sort(openNodes);
-        for (Node openNode : openNodes) {
-            System.out.println(openNode.getFCost());
+        Node currentNode = nodes[start[0]][start[1]];
+        while (currentNode.getPos() != nodes[end[0]][end[1]].getPos()) {
+            openNodes.remove(currentNode);
+            closedNodes.add(currentNode);
+            gui.setBackground(currentNode.getPos(), Color.RED);
+            openNodes.addAll(getNeighbors(currentNode.getPos()));
+            for (Node openNode : openNodes) {
+                openNode.setGCost(getDistance(openNode, start));
+                openNode.setHCost(getDistance(openNode, end));
+                gui.setBackground(openNode.getPos(), Color.GREEN);
+            }
+            Collections.sort(openNodes);
+            currentNode = openNodes.get(0);
+            System.out.println(Arrays.toString(currentNode.getPos()));
+            System.out.println(currentNode.getFCost());
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -47,7 +60,9 @@ public class Pathfinder {
                 for (int j = cords[1] -1; j <= cords[1] + 1; j++) {
                     if (j >= 0 && j < nodes[0].length) { // Y-Cord is in grid
                         if (!(i == cords[0] && j == cords[1])) { // Is not the start
-                            if (nodes[i][j].getSpecial() == ' ') neighbors.add(nodes[i][j]); // Add empty Node
+                            if (nodes[i][j].getSpecial() == ' ') {
+                                if (!openNodes.contains(nodes[i][j]) && !closedNodes.contains(nodes[i][j])) neighbors.add(nodes[i][j]); // Add empty Node
+                            }
                         }
                     }
                 }

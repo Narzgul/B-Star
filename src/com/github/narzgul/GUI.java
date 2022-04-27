@@ -2,13 +2,13 @@ package src.com.github.narzgul;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUI {
     private char nodeType;
     private int[] start, end;
+    JButton[][] buttons;
+
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
     public GUI(int length, int height) {
@@ -55,7 +55,6 @@ public class GUI {
         });
         statusBar.add(next);
 
-        JButton[][] buttons;
         buttons = new JButton[length][height];
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < height; j++) {
@@ -89,6 +88,10 @@ public class GUI {
                 grid.add(buttons[i][j]);
             }
         }
+    }
+
+    public void setBackground(int[] pos, Color color) {
+        buttons[pos[0]][pos[1]].setBackground(color);
     }
 
     public ArrayList<int[]> getObstacle() {

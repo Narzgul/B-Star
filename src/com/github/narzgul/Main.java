@@ -27,7 +27,7 @@ public class Main {
         start = gui.getStart();
         end = gui.getEnd();
         nodes[start[0]][start[1]].setSpecial('s');// Map Start
-        nodes[end[0]][end[1]].setSpecial('e'); // Map End
+        nodes[end[0]][end[1]].setSpecial(' '); // Map End
 
         // Map obstacles to the Node array
         for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]].setSpecial('o');
