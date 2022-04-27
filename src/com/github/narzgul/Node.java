@@ -1,11 +1,14 @@
 package src.com.github.narzgul;
 
-public class Node {
+public class Node implements Comparable<Node>{
     private int gCost;
     private int hCost;
-    private int fCost;
-    public Node() {
-
+    private char special;
+    private final int[] pos;
+    private Node parent;
+    public Node(char special, int[] pos) {
+        this.special = special;
+        this.pos = pos;
     }
 
     public int getGCost() {
@@ -14,7 +17,6 @@ public class Node {
 
     public void setGCost(int gCost) {
         this.gCost = gCost;
-        fCost = gCost + hCost;
     }
 
     public int getHCost() {
@@ -23,10 +25,34 @@ public class Node {
 
     public void setHCost(int hCost) {
         this.hCost = hCost;
-        fCost = gCost + hCost;
     }
 
     public int getFCost() {
-        return fCost;
+        return gCost + hCost;
+    }
+
+    public char getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(char special) {
+        this.special = special;
+    }
+
+    public int[] getPos() {
+        return pos;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public int compareTo(Node otherNode) {
+        return this.getFCost() - otherNode.getFCost();
     }
 }
