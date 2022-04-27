@@ -10,7 +10,11 @@ public class Main {
 
     private Main() {
         nodes = new Node[20][20];
-        System.out.println(nodes.length);
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes[0].length; j++) {
+                nodes[i][j] = new Node(' ', new int[]{i, j});
+            }
+        }
 
         gui = new GUI(nodes.length, nodes[0].length);
 
@@ -22,13 +26,13 @@ public class Main {
     public void startPathfinder() {
         start = gui.getStart();
         end = gui.getEnd();
-        nodes[start[0]][start[1]] = new Node('s'); // Map Start
-        nodes[end[0]][end[1]] = new Node('e'); // Map End
+        nodes[start[0]][start[1]].setSpecial('s');// Map Start
+        nodes[end[0]][end[1]].setSpecial('e'); // Map End
 
         // Map obstacles to the Node array
-        for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]] = new Node('o');
+        for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]].setSpecial('o');
 
-        Pathfinder pathfinder = new Pathfinder(nodes);
+        Pathfinder pathfinder = new Pathfinder(nodes, start, end);
         pathfinder.start();
     }
 
