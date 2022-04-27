@@ -20,8 +20,12 @@ public class Pathfinder {
     public void start() {
         System.out.println("Started Pathfinder");
 
-        Node currentNode = nodes[start[0]][start[1]];
+        openNodes.add(nodes[start[0]][start[1]]);
+        Node currentNode = openNodes.get(0);
         while (currentNode.getPos() != nodes[end[0]][end[1]].getPos()) {
+            Collections.sort(openNodes);
+            currentNode = openNodes.get(0);
+            gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
             openNodes.remove(currentNode);
             closedNodes.add(currentNode);
             gui.setBackground(currentNode.getPos(), Color.RED);
@@ -30,15 +34,20 @@ public class Pathfinder {
                     neighbor.setGCost(currentNode.getGCost() + getDistance(currentNode, neighbor.getPos()));
                     neighbor.setHCost(getDistance(neighbor, end));
                     gui.setBackground(neighbor.getPos(), Color.GREEN);
+                    neighbor.setParent(currentNode);
                     openNodes.add(neighbor);
                 } else {
                     int newGCost = currentNode.getGCost() + getDistance(currentNode, neighbor.getPos());
-                    if (newGCost < neighbor.getGCost()) neighbor.setGCost(newGCost);
+                    if (newGCost < neighbor.getGCost()) {
+                        neighbor.setGCost(newGCost);
+                        neighbor.setParent(currentNode);
+                    }
                 }
             }
-            Collections.sort(openNodes);
-            currentNode = openNodes.get(0);
-            gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
+        }
+        while (currentNode != nodes[start[0]][start[1]]) {
+            gui.setBackground(currentNode.getPos(), Color.CYAN);
+            currentNode = currentNode.getParent();
         }
     }
 
