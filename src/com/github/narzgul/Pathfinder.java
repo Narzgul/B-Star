@@ -23,7 +23,12 @@ public class Pathfinder {
         Node currentNode;
         do {
             Collections.sort(openNodes); // Sort by FCost
-            currentNode = openNodes.get(0); // Get node with lowest FCost
+            try {
+                currentNode = openNodes.get(0); // Get node with lowest FCost
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Couldn't find a path!");
+                return;
+            }
             openNodes.remove(currentNode); // Move currentNode to closedNodes
             closedNodes.add(currentNode);
 

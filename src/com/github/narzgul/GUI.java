@@ -42,19 +42,16 @@ public class GUI {
                 case 's' -> {
                     nodeType = 'e';
                     status.setText("Set the End");
-                    status.setSize(status.getPreferredSize());
                     statusBar.doLayout();
                 }
                 case 'e' -> {
                     nodeType = 'o';
                     status.setText("Set the Obstacles");
-                    status.setSize(status.getPreferredSize());
                     statusBar.doLayout();
                 }
                 case 'o' -> {
                     Main.getInstance().startPathfinder();
                     status.setText("Start again?");
-                    status.setSize(status.getPreferredSize());
                     statusBar.doLayout();
                 }
             }
