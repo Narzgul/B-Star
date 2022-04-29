@@ -50,9 +50,14 @@ public class GUI {
                     statusBar.doLayout();
                 }
                 case 'o' -> {
+                    nodeType = 'n';
                     Main.getInstance().startPathfinder();
                     status.setText("Start again?");
                     statusBar.doLayout();
+                }
+                case 'n' -> {
+                    frame.dispose();
+                    Main.resetInstance();
                 }
             }
         });

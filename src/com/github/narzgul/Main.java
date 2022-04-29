@@ -39,6 +39,9 @@ public class Main {
         return instance;
     }
 
+    public static void resetInstance() {
+        instance = new Main();
+    }
     public static void main(String[] args){
         Main.getInstance(); // Start Main
     }
