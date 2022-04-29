@@ -6,12 +6,14 @@ import java.util.ArrayList;
 
 public class GUI {
     private char nodeType; // Type of Node to be created
+    private Node[][] nodes;
     private int[] start, end;
     private final JButton[][] buttons;
 
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
-    public GUI(int length, int height) {
+    public GUI(int length, int height, Node[][] nodes) {
+        this.nodes = nodes;
         nodeType = 's';
 
         JFrame frame = new JFrame();
@@ -86,9 +88,17 @@ public class GUI {
                                 end = new int[]{finalI, finalJ};
                             }
                             case 'o' -> { // Obstacle
-                                button.setBackground(Color.GRAY);
-                                System.out.println("Obstacle: " + finalI + ',' + finalJ);
-                                obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
+                                if (nodes[finalI][finalJ].getSpecial() == 'o'){
+                                    button.setBackground(Color.WHITE);
+                                    System.out.println("Removed Obstacle: " + finalI + ',' + finalJ);
+                                    nodes[finalI][finalJ].setSpecial(' ');
+                                } else if (nodes[finalI][finalJ].getSpecial() == ' ') {
+                                    button.setBackground(Color.GRAY);
+                                    System.out.println("Obstacle: " + finalI + ',' + finalJ);
+                                    // obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
+                                    nodes[finalI][finalJ].setSpecial('o');
+                                }
+
                             }
                         }
                     }
@@ -116,5 +126,13 @@ public class GUI {
 
     public int[] getEnd() {
         return end;
+    }
+
+    public Node[][] getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(Node[][] nodes) {
+        this.nodes = nodes;
     }
 }

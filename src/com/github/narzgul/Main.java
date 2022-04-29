@@ -13,7 +13,7 @@ public class Main {
             }
         }
 
-        gui = new GUI(nodes.length, nodes[0].length);
+        gui = new GUI(nodes.length, nodes[0].length, nodes);
     }
 
     public void startPathfinder() {
@@ -23,7 +23,7 @@ public class Main {
         nodes[end[0]][end[1]].setSpecial(' '); // Map End
 
         // Map obstacles to the Node array
-        for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]].setSpecial('o');
+        // for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]].setSpecial('o');
 
         Pathfinder pathfinder = new Pathfinder(nodes, start, end);
         pathfinder.start();
