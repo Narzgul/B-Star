@@ -2,6 +2,7 @@ package src.com.github.narzgul;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Pathfinder {
@@ -19,11 +20,17 @@ public class Pathfinder {
     public void start() {
         System.out.println("Started Pathfinder");
 
-        openNodes.add(nodes[start[0]][start[1]]); // Makes start first openNode
+        nodes[start[0]][start[1]].setHCost(getDistance(nodes[start[0]][start[1]], end));
+        openNodes.add(0, nodes[start[0]][start[1]]); // Makes start first openNode
         Node currentNode;
         do {
             Collections.sort(openNodes); // Sort by FCost
-            currentNode = openNodes.get(0); // Get node with lowest FCost
+            try {
+                currentNode = openNodes.get(0); // Get node with lowest FCost
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Couldn't find a path!");
+                return;
+            }
             openNodes.remove(currentNode); // Move currentNode to closedNodes
             closedNodes.add(currentNode);
 
@@ -36,7 +43,7 @@ public class Pathfinder {
                     neighbor.setHCost(getDistance(neighbor, end));
                     gui.setBackground(neighbor.getPos(), Color.GREEN);
                     neighbor.setParent(currentNode);
-                    openNodes.add(neighbor);
+                    openNodes.add(0, neighbor);
                 } else {
                     // Check for new shortest path to neighbor
                     int newGCost = currentNode.getGCost() + getDistance(currentNode, neighbor.getPos());
@@ -60,7 +67,12 @@ public class Pathfinder {
         int disY = Math.abs(point[1] - node.getPos()[1]); // Distance to point in Y-Direction
 
         // Add diagonal (14) by looking for shortest distance (X || Y) + other direction (10)
-        return disX < disY ? (14 * disX) + 10 * (disY - disX) : (14 * disY) + 10 * (disX - disY);
+        int a = disX < disY ? (14 * disX) + 10 * (disY - disX) : (14 * disY) + 10 * (disX - disY);
+        int b = 10 * (Math.abs(point[0] - node.getPos()[0]) + Math.abs(point[1] - node.getPos()[1])); // Manhattan (?)
+        int c = (int) (10 * Math.sqrt(disX*disX + disY*disY)); // Pythagoras
+        System.out.println("A: " + a + "; B:" + b + "; C: " + c);
+        System.out.println("Node: " + Arrays.toString(node.getPos()) + "; point: " + Arrays.toString(point));
+        return c;
     }
 
     private ArrayList<Node> getNeighbors(int[] cords) {
