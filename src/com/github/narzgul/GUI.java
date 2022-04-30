@@ -37,14 +37,18 @@ public class GUI {
         next.addActionListener(e -> {
             switch (nodeType) {
                 case 's' -> { // Start
-                    nodeType = 'e';
-                    status.setText("Set the End");
-                    statusBar.doLayout();
+                    if (start != null) { // start ist set
+                        nodeType = 'e';
+                        status.setText("Set the End");
+                        statusBar.doLayout();
+                    } else showErrorDialog("Start", "Set a start point!");
                 }
                 case 'e' -> { // End
-                    nodeType = 'o';
-                    status.setText("Set the Obstacles");
-                    statusBar.doLayout();
+                    if (end != null) { // End is set
+                        nodeType = 'o';
+                        status.setText("Set the Obstacles");
+                        statusBar.doLayout();
+                    } else showErrorDialog("End", "Set an end point!");
                 }
                 case 'o' -> { // Obstacle
                     nodeType = 'n';
