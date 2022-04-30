@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Pathfinder {
+public class Pathfinder implements Runnable{
     private final Node[][] nodes;
     private final ArrayList<Node> openNodes = new ArrayList<>();
     private final ArrayList<Node> closedNodes = new ArrayList<>();
@@ -17,7 +17,7 @@ public class Pathfinder {
         this.end = end;
     }
 
-    public void start() {
+    public void run() {
         System.out.println("Started Pathfinder");
 
         nodes[start[0]][start[1]].setHCost(getDistance(nodes[start[0]][start[1]], end));
@@ -37,6 +37,11 @@ public class Pathfinder {
 
             gui.setText(currentNode.getPos(), "" + currentNode.getFCost());
             gui.setBackground(currentNode.getPos(), Color.RED);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             for (Node neighbor : getNeighbors(currentNode.getPos())) {
                 if (!openNodes.contains(neighbor)) {

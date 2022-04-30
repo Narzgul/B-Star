@@ -6,15 +6,14 @@ import java.util.ArrayList;
 
 public class GUI {
     private char nodeType; // Type of Node to be created
-    private Node[][] nodes;
     private int[] start, end;
     private final JButton[][] buttons;
     private final JFrame frame;
+    private final JPanel statusBar;
 
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
     public GUI(int length, int height, Node[][] nodes) {
-        this.nodes = nodes;
         nodeType = 's';
 
         frame = new JFrame();
@@ -29,7 +28,7 @@ public class GUI {
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(length,height));
         borderLayout.add(grid, BorderLayout.CENTER); // Middle of the panel
-        JPanel statusBar = new JPanel();
+        statusBar = new JPanel();
         statusBar.setLayout(new FlowLayout());
         borderLayout.add(statusBar, BorderLayout.SOUTH); // Bottom of the panel
         frame.add(borderLayout);
@@ -132,11 +131,4 @@ public class GUI {
         return end;
     }
 
-    public Node[][] getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(Node[][] nodes) {
-        this.nodes = nodes;
-    }
 }

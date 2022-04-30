@@ -21,11 +21,8 @@ public class Main {
         int[] end = gui.getEnd();
         nodes[start[0]][start[1]].setSpecial('s'); // Map Start
 
-        // Map obstacles to the Node array
-        // for (int[] obstacle : gui.getObstacle()) nodes[obstacle[0]][obstacle[1]].setSpecial('o');
-
         Pathfinder pathfinder = new Pathfinder(nodes, start, end);
-        pathfinder.start();
+        new Thread(pathfinder).start();
     }
 
     public GUI getGui() {
