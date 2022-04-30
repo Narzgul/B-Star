@@ -9,6 +9,7 @@ public class GUI {
     private Node[][] nodes;
     private int[] start, end;
     private final JButton[][] buttons;
+    private final JFrame frame;
 
 
     private final ArrayList<int[]> obstacle = new ArrayList<>();
@@ -16,7 +17,7 @@ public class GUI {
         this.nodes = nodes;
         nodeType = 's';
 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setSize(500, 550);
         frame.setTitle("A*");
         frame.setLocationRelativeTo(null); // Middle of the screen
@@ -109,6 +110,9 @@ public class GUI {
         frame.setVisible(true);
     }
 
+    public void showErrorDialog(String title, String message) {
+        JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
+    }
     public void setBackground(int[] pos, Color color) {
         buttons[pos[0]][pos[1]].setBackground(color);
     }
