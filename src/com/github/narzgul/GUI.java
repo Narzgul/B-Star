@@ -2,17 +2,13 @@ package src.com.github.narzgul;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GUI {
     private char nodeType; // Type of Node to be created
     private int[] start, end;
-    private final JButton[][] buttons;
+    private final JButton[][] buttons; // Outside constructor to change colors
     private final JFrame frame;
-    private final JPanel statusBar;
 
-
-    private final ArrayList<int[]> obstacle = new ArrayList<>();
     public GUI(int length, int height, Node[][] nodes) {
         nodeType = 's';
 
@@ -21,14 +17,13 @@ public class GUI {
         frame.setTitle("A*");
         frame.setLocationRelativeTo(null); // Middle of the screen
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Stop process on closing
-        frame.doLayout();
 
         JPanel borderLayout = new JPanel();
         borderLayout.setLayout(new BorderLayout()); // A layout with borders that are own panels
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(length,height));
         borderLayout.add(grid, BorderLayout.CENTER); // Middle of the panel
-        statusBar = new JPanel();
+        JPanel statusBar = new JPanel();
         statusBar.setLayout(new FlowLayout());
         borderLayout.add(statusBar, BorderLayout.SOUTH); // Bottom of the panel
         frame.add(borderLayout);
@@ -41,25 +36,26 @@ public class GUI {
         JButton next = new JButton("Next");
         next.addActionListener(e -> {
             switch (nodeType) {
-                case 's' -> {
+                case 's' -> { // Start
                     nodeType = 'e';
                     status.setText("Set the End");
                     statusBar.doLayout();
                 }
-                case 'e' -> {
+                case 'e' -> { // End
                     nodeType = 'o';
                     status.setText("Set the Obstacles");
                     statusBar.doLayout();
                 }
-                case 'o' -> {
+                case 'o' -> { // Obstacle
                     nodeType = 'n';
                     Main.getInstance().startPathfinder();
                     status.setText("Start again?");
+                    next.setText("Yes");
                     statusBar.doLayout();
                 }
-                case 'n' -> {
-                    frame.dispose();
-                    Main.resetInstance();
+                case 'n' -> { // New / Reset
+                    frame.dispose(); // Close Window
+                    Main.resetInstance(); // Reset Main to restart whole program
                 }
             }
         });
@@ -88,17 +84,15 @@ public class GUI {
                                 end = new int[]{finalI, finalJ};
                             }
                             case 'o' -> { // Obstacle
-                                if (nodes[finalI][finalJ].getSpecial() == 'o'){
+                                if (nodes[finalI][finalJ].getSpecial() == 'o') { // Is already an obstacle
                                     button.setBackground(Color.WHITE);
                                     System.out.println("Removed Obstacle: " + finalI + ',' + finalJ);
                                     nodes[finalI][finalJ].setSpecial(' ');
-                                } else if (nodes[finalI][finalJ].getSpecial() == ' ') {
+                                } else if (nodes[finalI][finalJ].getSpecial() == ' ') { // Is an empty Node
                                     button.setBackground(Color.GRAY);
                                     System.out.println("Obstacle: " + finalI + ',' + finalJ);
-                                    // obstacle.add(new int[]{finalI, finalJ}); // Add cords to list
                                     nodes[finalI][finalJ].setSpecial('o');
                                 }
-
                             }
                         }
                     }
@@ -106,7 +100,7 @@ public class GUI {
                 grid.add(buttons[i][j]);
             }
         }
-        frame.setVisible(true);
+        frame.setVisible(true); // Needs to be at the end, else content won't be shown
     }
 
     public void showErrorDialog(String title, String message) {
@@ -117,10 +111,6 @@ public class GUI {
     }
     public void setText(int[] pos, String text) {
         buttons[pos[0]][pos[1]].setText(text);
-    }
-
-    public ArrayList<int[]> getObstacle() {
-        return obstacle;
     }
 
     public int[] getStart() {

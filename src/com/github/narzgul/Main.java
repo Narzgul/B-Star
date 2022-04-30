@@ -21,8 +21,7 @@ public class Main {
         int[] end = gui.getEnd();
         nodes[start[0]][start[1]].setSpecial('s'); // Map Start
 
-        Pathfinder pathfinder = new Pathfinder(nodes, start, end);
-        new Thread(pathfinder).start();
+        new Thread(new Pathfinder(nodes, start, end)).start(); // Pathfinder in its own Thread
     }
 
     public GUI getGui() {
